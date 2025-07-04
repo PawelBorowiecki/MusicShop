@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -23,16 +23,17 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "date", nullable = false)
-    private LocalDateTime date;
+    @Column(name = "creation_date", nullable = false)
+    private LocalDateTime creationDate;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @ManyToMany
+    @OneToMany
     @JsonIgnore
-    private List<MusicCD> products;
+    private Set<MusicCD> products;
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne
+    @JoinColumn(name = "payment_id")
     private Payment payment;
 }

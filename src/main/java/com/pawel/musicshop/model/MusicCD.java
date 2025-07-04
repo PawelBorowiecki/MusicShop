@@ -21,10 +21,16 @@ public class MusicCD {
     private String id;
     private String name;
     private String musicType;
+
+    @Column(columnDefinition = "NUMERIC")
+    private int releasedYear;
+
     @Column(columnDefinition = "NUMERIC")
     private double price;
+
     @Column(columnDefinition = "BOOLEAN")
     private boolean isActive;
+
     @Column(columnDefinition = "BOOLEAN")
     private boolean isInCart;
 }

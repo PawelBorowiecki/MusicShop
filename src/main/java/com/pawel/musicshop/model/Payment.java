@@ -19,8 +19,7 @@ public class Payment {
     @Column(nullable = false, unique = true)
     private String id;
 
-    @OneToOne
-    @JoinColumn(name = "order_id", nullable = false)
+    @OneToOne(mappedBy = "order")
     @JsonIgnore
     private Order order;
 

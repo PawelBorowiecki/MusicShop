@@ -36,4 +36,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+
+    @OneToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 }
