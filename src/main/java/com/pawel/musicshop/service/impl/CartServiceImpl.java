@@ -1,6 +1,7 @@
 package com.pawel.musicshop.service.impl;
 
 import com.pawel.musicshop.model.Cart;
+import com.pawel.musicshop.repository.CartRepository;
 import com.pawel.musicshop.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,18 +12,19 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
+    private final CartRepository cartRepository;
     @Override
     public List<Cart> findAll() {
-        return null;
+        return cartRepository.findAll();
     }
 
     @Override
     public Optional<Cart> findById(String id) {
-        return Optional.empty();
+        return cartRepository.findById(id);
     }
 
     @Override
-    public List<Cart> findUserCart(String userId) {
-        return null;
+    public Optional<Cart> findUserCart(String userId) {
+        return cartRepository.findUserCart(userId);
     }
 }
