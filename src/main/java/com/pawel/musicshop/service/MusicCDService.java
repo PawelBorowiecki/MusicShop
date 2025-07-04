@@ -9,7 +9,7 @@ public interface MusicCDService {
     List<MusicCD> findAll();
     List<MusicCD> findAllActive();
     Optional<MusicCD> findById(String id);
-    MusicCD save(MusicCD MusicCD);
+    MusicCD save(MusicCD musicCD);
     List<MusicCD> findAvailableCDs();
     boolean isAvailable(String cdId);
     void deleteById(String id);

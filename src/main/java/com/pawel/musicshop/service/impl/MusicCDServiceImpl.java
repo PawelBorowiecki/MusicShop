@@ -1,6 +1,7 @@
 package com.pawel.musicshop.service.impl;
 
 import com.pawel.musicshop.model.MusicCD;
+import com.pawel.musicshop.repository.MusicCDRepository;
 import com.pawel.musicshop.service.MusicCDService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,38 +12,39 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MusicCDServiceImpl implements MusicCDService {
+    private final MusicCDRepository musicCDRepository;
     @Override
     public List<MusicCD> findAll() {
-        return null;
+        return musicCDRepository.findAll();
     }
 
     @Override
     public List<MusicCD> findAllActive() {
-        return null;
+        return musicCDRepository.findByIsActiveTrue();
     }
 
     @Override
     public Optional<MusicCD> findById(String id) {
-        return Optional.empty();
+        return musicCDRepository.findById(id);
     }
 
     @Override
-    public MusicCD save(MusicCD MusicCD) {
-        return null;
+    public MusicCD save(MusicCD musicCD) {
+        return musicCDRepository.save(musicCD);
     }
 
     @Override
     public List<MusicCD> findAvailableCDs() {
-        return null;
+        return musicCDRepository.findByIsActiveTrueAndIsInCartFalse();
     }
 
     @Override
     public boolean isAvailable(String cdId) {
-        return false;
+        return musicCDRepository.findByIdAndIsActiveTrueAndIsInCartFalse(cdId).isPresent();
     }
 
     @Override
     public void deleteById(String id) {
-
+        musicCDRepository.deleteById(id);
     }
 }
