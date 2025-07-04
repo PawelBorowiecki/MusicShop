@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface CartService {
     List<Cart> findAll();
     Optional<Cart> findById(String id);
-    List<Cart> findUserCart(String userId);
+    Optional<Cart> findUserCart(String userId);
 }
