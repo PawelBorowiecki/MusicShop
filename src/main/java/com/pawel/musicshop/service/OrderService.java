@@ -9,4 +9,6 @@ public interface OrderService {
     List<Order> findAll();
     Optional<Order> findById(String id);
     List<Order> findUserOrders(String userId);
+    boolean placeOrder(String userId);
+    boolean changeOrderStatus(String id, String newStatus);
 }
