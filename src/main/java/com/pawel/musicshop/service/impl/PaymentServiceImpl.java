@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
     @Override
-    public String createCheckoutSession(String rentalId) {
+    public String createCheckoutSession(String orderId) {
         return null;
     }
 
