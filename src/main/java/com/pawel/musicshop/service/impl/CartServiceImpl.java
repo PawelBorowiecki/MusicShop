@@ -2,10 +2,8 @@ package com.pawel.musicshop.service.impl;
 
 import com.pawel.musicshop.model.Cart;
 import com.pawel.musicshop.model.MusicCD;
-import com.pawel.musicshop.model.User;
 import com.pawel.musicshop.repository.CartRepository;
 import com.pawel.musicshop.repository.MusicCDRepository;
-import com.pawel.musicshop.repository.UserRepository;
 import com.pawel.musicshop.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,6 @@ import java.util.Optional;
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final MusicCDRepository musicCDRepository;
-    private final UserRepository userRepository;
     @Override
     public List<Cart> findAll() {
         return cartRepository.findAll();
@@ -62,5 +59,11 @@ public class CartServiceImpl implements CartService {
             }
         }
         return false;
+    }
+
+    @Override
+    public double getProductsInCartTotalPrice(String id) {
+        Optional<Cart> cart = cartRepository.findById(id);
+        return cart.map(value -> value.getProducts().stream().mapToDouble(MusicCD::getPrice).sum()).orElse(-1.0);
     }
 }

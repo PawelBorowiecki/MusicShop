@@ -11,4 +11,5 @@ public interface CartService {
     Optional<Cart> findUserCart(String userId);
     boolean addMusicCDToCart(String cdId, String userId);
     boolean deleteMusicCDFromCart(String cdId, String userId);
+    double getProductsInCartTotalPrice(String id);
 }
