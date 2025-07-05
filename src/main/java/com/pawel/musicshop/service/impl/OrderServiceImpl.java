@@ -8,6 +8,7 @@ import com.pawel.musicshop.repository.UserRepository;
 import com.pawel.musicshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public boolean placeOrder(String userId) {
         Optional<User> user = userRepository.findById(userId);
         if(user.isPresent()){
