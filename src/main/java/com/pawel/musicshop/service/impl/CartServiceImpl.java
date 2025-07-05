@@ -36,7 +36,7 @@ public class CartServiceImpl implements CartService {
         Optional<MusicCD> musicCD = musicCDRepository.findById(cdId);
         Optional<Cart> cart = cartRepository.findUserCart(userId);
         if(musicCD.isPresent() && cart.isPresent()){
-            if(musicCD.get().isInCart()){
+            if(musicCD.get().isInCart() || !musicCD.get().isActive()){
                 return false;
             }else{
                 cart.get().getProducts().add(musicCD.get());

@@ -12,5 +12,5 @@ public interface MusicCDService {
     MusicCD save(MusicCD musicCD);
     List<MusicCD> findAvailableCDs();
     boolean isAvailable(String cdId);
-    void deleteById(String id);
+    boolean deleteById(String id);
 }

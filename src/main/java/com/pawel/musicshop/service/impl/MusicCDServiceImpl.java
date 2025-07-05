@@ -5,15 +5,18 @@ import com.pawel.musicshop.repository.MusicCDRepository;
 import com.pawel.musicshop.service.MusicCDService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class MusicCDServiceImpl implements MusicCDService {
     private final MusicCDRepository musicCDRepository;
     @Override
+    @Transactional(readOnly = true)
     public List<MusicCD> findAll() {
         return musicCDRepository.findAll();
     }
@@ -29,7 +32,12 @@ public class MusicCDServiceImpl implements MusicCDService {
     }
 
     @Override
+    @Transactional
     public MusicCD save(MusicCD musicCD) {
+        if(musicCD.getId() == null || musicCD.getId().isBlank()){
+            musicCD.setId(UUID.randomUUID().toString());
+            musicCD.setActive(true);
+        }
         return musicCDRepository.save(musicCD);
     }
 
@@ -44,7 +52,12 @@ public class MusicCDServiceImpl implements MusicCDService {
     }
 
     @Override
-    public void deleteById(String id) {
-        musicCDRepository.deleteById(id);
+    public boolean deleteById(String id) {
+        Optional<MusicCD> musicCD = musicCDRepository.findById(id);
+        if(musicCD.isPresent()){
+            musicCD.get().setActive(false);
+            return true;
+        }
+        return false;
     }
 }
