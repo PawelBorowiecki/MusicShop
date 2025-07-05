@@ -7,19 +7,37 @@ import com.pawel.musicshop.repository.RoleRepository;
 import com.pawel.musicshop.repository.UserRepository;
 import com.pawel.musicshop.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
     @Override
     public void register(UserRequest req) {
-        //TODO gdy bedzie security
+        if(userRepository.findByLogin(req.getLogin()).isPresent()){
+            throw new IllegalArgumentException("Error! Uzytkownik o podanym loginie juz istnieje");
+        }
+        Role userRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new IllegalStateException("There is no role... ROLE_USER"));
+
+        User u = User.builder()
+                .id(UUID.randomUUID().toString())
+                .login(req.getLogin())
+                .password(passwordEncoder.encode(req.getPassword()))
+                .isActive(true)
+                .roles(Set.of(userRole))
+                .build();
+
+        userRepository.save(u);
     }
 
     @Override
