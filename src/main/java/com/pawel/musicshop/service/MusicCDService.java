@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface MusicCDService {
     List<MusicCD> findAll();
     List<MusicCD> findAllActive();
+    List<MusicCD> findAllInCarts();
     Optional<MusicCD> findById(String id);
     MusicCD save(MusicCD musicCD);
     List<MusicCD> findAvailableCDs();

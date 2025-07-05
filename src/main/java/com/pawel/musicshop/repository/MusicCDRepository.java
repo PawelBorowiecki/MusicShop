@@ -15,8 +15,8 @@ public interface MusicCDRepository extends JpaRepository<MusicCD, String> {
     List<MusicCD> findByIsActiveTrue();
     @Query("SELECT m FROM MusicCD m WHERE m.isActive = TRUE AND m.isInCart = FALSE")
     List<MusicCD> findByIsActiveTrueAndIsInCartFalse();
-    @Query("SELECT m FROM MusicCD m WHERE m.id = ?1 AND m.isActive = TRUE")
-    Optional<MusicCD> findByIdAndIsActiveTrue(String id);
+    @Query("SELECT m FROM MusicCD m WHERE m.isActive = TRUE AND m.isInCart = TRUE")
+    List<MusicCD> findByIsActiveTrueAndIsInCartTrue();
     @Query("SELECT m FROM MusicCD m WHERE m.id = ?1 AND m.isActive = TRUE AND m.isInCart = FALSE")
     Optional<MusicCD> findByIdAndIsActiveTrueAndIsInCartFalse(String id);
 }

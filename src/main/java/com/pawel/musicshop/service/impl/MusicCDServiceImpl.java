@@ -27,6 +27,11 @@ public class MusicCDServiceImpl implements MusicCDService {
     }
 
     @Override
+    public List<MusicCD> findAllInCarts() {
+        return musicCDRepository.findByIsActiveTrueAndIsInCartTrue();
+    }
+
+    @Override
     public Optional<MusicCD> findById(String id) {
         return musicCDRepository.findById(id);
     }
