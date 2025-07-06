@@ -87,6 +87,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public void handleWebhook(String payload, String signature) {
         Stripe.apiKey = apiKey;
         Event event;

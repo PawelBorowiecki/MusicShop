@@ -1,5 +1,6 @@
 package com.pawel.musicshop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class Payment {
 
     @OneToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
 
     @Column(columnDefinition = "NUMERIC")

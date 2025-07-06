@@ -31,6 +31,7 @@ public class Order {
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order")
+    @JsonIgnore
     private Set<OrderItem> items = new HashSet<>();
 
     @OneToOne(mappedBy = "order")

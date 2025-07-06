@@ -68,6 +68,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public boolean changeOrderStatus(String id, String newStatus) {
         Optional<Order> order = orderRepository.findById(id);
         if(order.isPresent()){

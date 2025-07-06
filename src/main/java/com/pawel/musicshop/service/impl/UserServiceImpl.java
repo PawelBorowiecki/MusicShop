@@ -47,8 +47,8 @@ public class UserServiceImpl implements UserService {
 
         u.setCart(cart);
 
-        cartRepository.save(cart);
         userRepository.save(u);
+        cartRepository.save(cart);
     }
 
     @Override
