@@ -90,6 +90,12 @@ public class CartServiceImpl implements CartService {
     @Override
     public double getProductsInCartTotalPrice(String id) {
         Optional<Cart> cart = cartRepository.findById(id);
-        return cart.map(value -> value.getProducts().stream().mapToDouble(MusicCD::getPrice).sum()).orElse(-1.0);
+        double result = 0;
+        if(cart.isPresent()){
+            for(CartItem item : cart.get().getProducts()){
+                result += item.getCd().getPrice() * item.getQuantity();
+            }
+        }
+        return result;
     }
 }
