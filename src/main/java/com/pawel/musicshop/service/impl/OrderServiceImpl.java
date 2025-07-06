@@ -1,8 +1,7 @@
 package com.pawel.musicshop.service.impl;
 
-import com.pawel.musicshop.model.Order;
-import com.pawel.musicshop.model.OrderStatus;
-import com.pawel.musicshop.model.User;
+import com.pawel.musicshop.model.*;
+import com.pawel.musicshop.repository.OrderItemRepository;
 import com.pawel.musicshop.repository.OrderRepository;
 import com.pawel.musicshop.repository.UserRepository;
 import com.pawel.musicshop.service.OrderService;
@@ -11,14 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
     private final UserRepository userRepository;
     @Override
     public List<Order> findAll() {
@@ -45,8 +43,23 @@ public class OrderServiceImpl implements OrderService {
                     .user(user.get())
                     .creationDate(LocalDateTime.now())
                     .status(OrderStatus.CREATED)
-                    .products(user.get().getCart().getProducts())
                     .build();
+
+            Set<OrderItem> orderItemSet = new HashSet<>();
+
+            for(CartItem p : user.get().getCart().getProducts()){
+                OrderItem orderItem = OrderItem.builder()
+                        .id(UUID.randomUUID().toString())
+                        .order(order)
+                        .cd(p.getCd())
+                        .quantity(p.getQuantity())
+                        .price(p.getCd().getPrice() * p.getQuantity())
+                        .build();
+                orderItemSet.add(orderItem);
+                orderItemRepository.save(orderItem);
+            }
+
+            order.setItems(orderItemSet);
             orderRepository.save(order);
             return true;
         }

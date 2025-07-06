@@ -1,7 +1,9 @@
 package com.pawel.musicshop.service.impl;
 
 import com.pawel.musicshop.model.Cart;
+import com.pawel.musicshop.model.CartItem;
 import com.pawel.musicshop.model.MusicCD;
+import com.pawel.musicshop.repository.CartItemRepository;
 import com.pawel.musicshop.repository.CartRepository;
 import com.pawel.musicshop.repository.MusicCDRepository;
 import com.pawel.musicshop.service.CartService;
@@ -10,11 +12,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
     private final MusicCDRepository musicCDRepository;
     @Override
     public List<Cart> findAll() {
@@ -32,16 +36,37 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public boolean addMusicCDToCart(String cdId, String userId) {
+    public boolean addMusicCDToCart(String cdId, String userId, int quantity) {
         Optional<MusicCD> musicCD = musicCDRepository.findById(cdId);
         Optional<Cart> cart = cartRepository.findUserCart(userId);
         if(musicCD.isPresent() && cart.isPresent()){
-            if(musicCD.get().getCart() != null || !musicCD.get().isActive()){
-                return false;
+            Optional<CartItem> cartItemOpt = cartItemRepository.findByCartAndCd(cart.get(), musicCD.get());
+            if(cartItemOpt.isPresent()){
+                if(musicCD.get().getQuantity() - cartItemOpt.get().getQuantity() - quantity < 0){
+                    return false;
+                }else{
+                    CartItem newCartItem = CartItem.builder()
+                            .id(UUID.randomUUID().toString())
+                            .cart(cart.get())
+                            .cd(musicCD.get())
+                            .quantity(quantity)
+                            .build();
+                    cartItemRepository.save(newCartItem);
+                    cart.get().getProducts().add(newCartItem);
+                    return true;
+                }
             }else{
-                cart.get().getProducts().add(musicCD.get());
-                musicCD.get().setCart(cart.get());
-                return true;
+                if(musicCD.get().getQuantity() >= quantity){
+                    CartItem newCartItem = CartItem.builder()
+                            .id(UUID.randomUUID().toString())
+                            .cart(cart.get())
+                            .cd(musicCD.get())
+                            .quantity(quantity)
+                            .build();
+                    cartItemRepository.save(newCartItem);
+                    cart.get().getProducts().add(newCartItem);
+                    return true;
+                }
             }
         }
         return false;
@@ -52,9 +77,10 @@ public class CartServiceImpl implements CartService {
         Optional<MusicCD> musicCD = musicCDRepository.findById(cdId);
         Optional<Cart> cart = cartRepository.findUserCart(userId);
         if(musicCD.isPresent() && cart.isPresent()){
-            if(musicCD.get().getCart() != null && cart.get().getProducts().contains(musicCD.get())){
-                musicCD.get().setCart(cart.get());
-                cart.get().getProducts().remove(musicCD.get());
+            Optional<CartItem> cartItem = cartItemRepository.findByCartAndCd(cart.get(), musicCD.get());
+            if(cartItem.isPresent()){
+                cartItemRepository.deleteById(cartItem.get().getId());
+                cart.get().getProducts().remove(cartItem);
                 return true;
             }
         }

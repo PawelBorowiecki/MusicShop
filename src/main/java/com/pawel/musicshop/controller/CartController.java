@@ -57,12 +57,12 @@ public class CartController {
         return ResponseEntity.internalServerError().build();
     }
 
-    @PostMapping("/add={cdId}")
-    public ResponseEntity<?> addToCart(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String cdId){
+    @PostMapping("/add={cdId}-{quantity}")
+    public ResponseEntity<?> addToCart(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String cdId, @PathVariable int quantity){
         String login = userDetails.getUsername();
         Optional<User> user = userService.findByLogin(login);
         if(user.isPresent()){
-            boolean status = cartService.addMusicCDToCart(cdId, user.get().getId());
+            boolean status = cartService.addMusicCDToCart(cdId, user.get().getId(), quantity);
             if(status){
                 return ResponseEntity.ok().build();
             }else{

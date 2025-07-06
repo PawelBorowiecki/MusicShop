@@ -28,7 +28,8 @@ public class MusicCDServiceImpl implements MusicCDService {
 
     @Override
     public List<MusicCD> findAllInCarts() {
-        return musicCDRepository.findByIsActiveTrueAndIsInCartTrue();
+        //TODO
+        return null;
     }
 
     @Override
@@ -48,12 +49,14 @@ public class MusicCDServiceImpl implements MusicCDService {
 
     @Override
     public List<MusicCD> findAvailableCDs() {
-        return musicCDRepository.findByIsActiveTrueAndIsInCartFalse();
+        //TODO
+        return null;
     }
 
     @Override
     public boolean isAvailable(String cdId) {
-        return musicCDRepository.findByIdAndIsActiveTrueAndIsInCartFalse(cdId).isPresent();
+        //TODO
+        return false;
     }
 
     @Override
