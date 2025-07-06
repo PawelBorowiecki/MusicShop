@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "payment")
+@Data
 @Getter
 @Setter
 @ToString(exclude = "order")
