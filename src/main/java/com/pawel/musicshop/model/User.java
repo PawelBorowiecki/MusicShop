@@ -36,7 +36,6 @@ public class User {
     )
     private Set<Role> roles;
 
-    @OneToOne
-    @JoinColumn(name = "cart_id")
+    @OneToOne(mappedBy = "user")
     private Cart cart;
 }

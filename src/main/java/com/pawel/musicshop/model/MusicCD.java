@@ -26,14 +26,9 @@ public class MusicCD {
     @Column(columnDefinition = "NUMERIC")
     private double price;
 
+    @Column(columnDefinition = "NUMERIC")
+    private int quantity;
+
     @Column(columnDefinition = "BOOLEAN")
     private boolean isActive;
-
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id")
-    private Order order;
 }

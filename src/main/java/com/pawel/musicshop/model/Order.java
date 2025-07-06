@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -30,9 +31,8 @@ public class Order {
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order")
-    private Set<MusicCD> products;
+    private Set<OrderItem> items = new HashSet<>();
 
-    @OneToOne
-    @JoinColumn(name = "payment_id")
+    @OneToOne(mappedBy = "order")
     private Payment payment;
 }

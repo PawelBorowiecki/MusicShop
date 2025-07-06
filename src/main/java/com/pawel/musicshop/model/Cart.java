@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,5 +25,5 @@ public class Cart {
     private User user;
 
     @OneToMany(mappedBy = "cart")
-    private Set<MusicCD> products;
+    private Set<CartItem> products = new HashSet<>();
 }
