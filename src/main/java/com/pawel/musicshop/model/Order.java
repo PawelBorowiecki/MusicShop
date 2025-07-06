@@ -29,8 +29,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
+    @OneToMany(mappedBy = "order")
     private Set<MusicCD> products;
 
     @OneToOne

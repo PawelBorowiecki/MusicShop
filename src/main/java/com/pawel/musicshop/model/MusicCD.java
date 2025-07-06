@@ -32,4 +32,8 @@ public class MusicCD {
     @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
+    private Order order;
 }
