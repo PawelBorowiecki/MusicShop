@@ -1,8 +1,10 @@
 package com.pawel.musicshop.service.impl;
 
 import com.pawel.musicshop.dto.UserRequest;
+import com.pawel.musicshop.model.Cart;
 import com.pawel.musicshop.model.Role;
 import com.pawel.musicshop.model.User;
+import com.pawel.musicshop.repository.CartRepository;
 import com.pawel.musicshop.repository.RoleRepository;
 import com.pawel.musicshop.repository.UserRepository;
 import com.pawel.musicshop.service.UserService;
@@ -19,6 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final CartRepository cartRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     @Override
@@ -37,6 +40,14 @@ public class UserServiceImpl implements UserService {
                 .roles(Set.of(userRole))
                 .build();
 
+        Cart cart = Cart.builder()
+                .id(UUID.randomUUID().toString())
+                .user(u)
+                .build();
+
+        u.setCart(cart);
+
+        cartRepository.save(cart);
         userRepository.save(u);
     }
 

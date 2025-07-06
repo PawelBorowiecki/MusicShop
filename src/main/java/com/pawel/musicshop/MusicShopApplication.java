@@ -7,11 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MusicShopApplication {
 
     public static void main(String[] args) {
-        //TODO Moze dodac mozliwosc sprawdzenia wartosci produktow w koszyku bez robienia zamowienia
-        //TODO Dodac security
-        //TODO Dodac platnosci
-        //TODO Dodac mozliwosc dodawania plyt do koszyka
-        //TODO Implementacja kontrolerow
+        //TODO Zmiana isInCart na obiekt klasy Cart
+        //TODO Dopracowac relacje w bazie danych
         SpringApplication.run(MusicShopApplication.class, args);
     }
 
