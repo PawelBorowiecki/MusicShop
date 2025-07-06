@@ -13,10 +13,10 @@ import java.util.Optional;
 public interface MusicCDRepository extends JpaRepository<MusicCD, String> {
     @Query("SELECT m FROM MusicCD m WHERE m.isActive = TRUE")
     List<MusicCD> findByIsActiveTrue();
-    @Query("SELECT m FROM MusicCD m WHERE m.isActive = TRUE AND m.isInCart = FALSE")
+    @Query("SELECT m FROM MusicCD m WHERE m.isActive = TRUE AND m.cart.id IS NULL")
     List<MusicCD> findByIsActiveTrueAndIsInCartFalse();
-    @Query("SELECT m FROM MusicCD m WHERE m.isActive = TRUE AND m.isInCart = TRUE")
+    @Query("SELECT m FROM MusicCD m WHERE m.isActive = TRUE AND m.cart.id IS NOT NULL")
     List<MusicCD> findByIsActiveTrueAndIsInCartTrue();
-    @Query("SELECT m FROM MusicCD m WHERE m.id = ?1 AND m.isActive = TRUE AND m.isInCart = FALSE")
+    @Query("SELECT m FROM MusicCD m WHERE m.id = ?1 AND m.isActive = TRUE AND m.cart.id IS NULL")
     Optional<MusicCD> findByIdAndIsActiveTrueAndIsInCartFalse(String id);
 }

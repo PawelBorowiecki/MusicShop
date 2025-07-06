@@ -19,7 +19,8 @@ public class Cart {
     @Column(nullable = false, unique = true)
     private String id;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "cart")

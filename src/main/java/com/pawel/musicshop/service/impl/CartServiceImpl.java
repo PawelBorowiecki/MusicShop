@@ -36,11 +36,11 @@ public class CartServiceImpl implements CartService {
         Optional<MusicCD> musicCD = musicCDRepository.findById(cdId);
         Optional<Cart> cart = cartRepository.findUserCart(userId);
         if(musicCD.isPresent() && cart.isPresent()){
-            if(musicCD.get().isInCart() || !musicCD.get().isActive()){
+            if(musicCD.get().getCart() != null || !musicCD.get().isActive()){
                 return false;
             }else{
                 cart.get().getProducts().add(musicCD.get());
-                musicCD.get().setInCart(true);
+                musicCD.get().setCart(cart.get());
                 return true;
             }
         }
@@ -52,8 +52,8 @@ public class CartServiceImpl implements CartService {
         Optional<MusicCD> musicCD = musicCDRepository.findById(cdId);
         Optional<Cart> cart = cartRepository.findUserCart(userId);
         if(musicCD.isPresent() && cart.isPresent()){
-            if(musicCD.get().isInCart() && cart.get().getProducts().contains(musicCD.get())){
-                musicCD.get().setInCart(false);
+            if(musicCD.get().getCart() != null && cart.get().getProducts().contains(musicCD.get())){
+                musicCD.get().setCart(cart.get());
                 cart.get().getProducts().remove(musicCD.get());
                 return true;
             }

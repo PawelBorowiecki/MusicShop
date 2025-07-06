@@ -19,8 +19,8 @@ public class Payment {
     @Column(nullable = false, unique = true)
     private String id;
 
-    @OneToOne(mappedBy = "order")
-    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @Column(columnDefinition = "NUMERIC")
