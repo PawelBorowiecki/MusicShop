@@ -4,6 +4,7 @@ import com.pawel.musicshop.model.Order;
 import com.pawel.musicshop.model.OrderStatus;
 import com.pawel.musicshop.model.Payment;
 import com.pawel.musicshop.model.PaymentStatus;
+import com.pawel.musicshop.repository.OrderRepository;
 import com.pawel.musicshop.repository.PaymentRepository;
 import com.pawel.musicshop.service.CartService;
 import com.pawel.musicshop.service.OrderService;
@@ -28,6 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
     private final OrderService orderService;
+    private final OrderRepository orderRepository;
     private final PaymentRepository paymentRepository;
 
     @Value("${STRIPE_API_KEY}")
@@ -105,6 +107,7 @@ public class PaymentServiceImpl implements PaymentService {
                     paymentRepository.save(payment);
                     Order order = payment.getOrder();
                     order.setStatus(OrderStatus.IN_PREPARATION);
+                    orderRepository.save(order);
                 });
             }
         }

@@ -1,10 +1,7 @@
 package com.pawel.musicshop.service.impl;
 
 import com.pawel.musicshop.model.*;
-import com.pawel.musicshop.repository.CartItemRepository;
-import com.pawel.musicshop.repository.OrderItemRepository;
-import com.pawel.musicshop.repository.OrderRepository;
-import com.pawel.musicshop.repository.UserRepository;
+import com.pawel.musicshop.repository.*;
 import com.pawel.musicshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +17,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderItemRepository orderItemRepository;
     private final UserRepository userRepository;
     private final CartItemRepository cartItemRepository;
+    private final MusicCDRepository musicCDRepository;
     @Override
     public List<Order> findAll() {
         return orderRepository.findAll();
@@ -47,6 +45,7 @@ public class OrderServiceImpl implements OrderService {
                     .status(OrderStatus.CREATED)
                     .build();
 
+            orderRepository.save(order);
             Set<OrderItem> orderItemSet = new HashSet<>();
 
             for(CartItem p : user.get().getCart().getProducts()){
@@ -60,6 +59,11 @@ public class OrderServiceImpl implements OrderService {
                 orderItemSet.add(orderItem);
                 orderItemRepository.save(orderItem);
                 cartItemRepository.delete(p);
+                Optional<MusicCD> cd = musicCDRepository.findById(p.getCd().getId());
+                if(cd.isPresent()){
+                    cd.get().setQuantity(cd.get().getQuantity() - p.getQuantity());
+                    musicCDRepository.save(cd.get());
+                }
             }
 
             order.setItems(orderItemSet);
