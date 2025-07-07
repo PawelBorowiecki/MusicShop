@@ -51,6 +51,12 @@ public class MusicCDServiceImpl implements MusicCDService {
         if(musicCD.getId() == null || musicCD.getId().isBlank()){
             musicCD.setId(UUID.randomUUID().toString());
             musicCD.setActive(true);
+        }else{
+            Optional<MusicCD> optionalMusicCD = musicCDRepository.findById(musicCD.getId());
+            if(optionalMusicCD.isPresent()){
+                optionalMusicCD.get().setQuantity(optionalMusicCD.get().getQuantity() + musicCD.getQuantity());
+                return musicCDRepository.save(optionalMusicCD.get());
+            }
         }
         return musicCDRepository.save(musicCD);
     }
@@ -79,7 +85,7 @@ public class MusicCDServiceImpl implements MusicCDService {
         Optional<MusicCD> musicCD = musicCDRepository.findById(id);
         if(musicCD.isPresent()){
             musicCD.get().setActive(false);
-            save(musicCD.get());
+            musicCDRepository.save(musicCD.get());
             return true;
         }
         return false;
