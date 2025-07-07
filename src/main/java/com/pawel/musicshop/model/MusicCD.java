@@ -30,5 +30,5 @@ public class MusicCD {
     private int quantity;
 
     @Column(columnDefinition = "BOOLEAN")
-    private boolean isActive;
+    private boolean isActive = true;
 }

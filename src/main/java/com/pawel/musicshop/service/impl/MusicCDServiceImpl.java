@@ -84,10 +84,12 @@ public class MusicCDServiceImpl implements MusicCDService {
     }
 
     @Override
+    @Transactional
     public boolean deleteById(String id) {
         Optional<MusicCD> musicCD = musicCDRepository.findById(id);
         if(musicCD.isPresent()){
             musicCD.get().setActive(false);
+            save(musicCD.get());
             return true;
         }
         return false;
