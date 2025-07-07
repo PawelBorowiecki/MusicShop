@@ -1,12 +1,17 @@
 package com.pawel.musicshop.service.impl;
 
+import com.pawel.musicshop.model.Cart;
+import com.pawel.musicshop.model.CartItem;
 import com.pawel.musicshop.model.MusicCD;
+import com.pawel.musicshop.repository.CartItemRepository;
+import com.pawel.musicshop.repository.CartRepository;
 import com.pawel.musicshop.repository.MusicCDRepository;
 import com.pawel.musicshop.service.MusicCDService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,6 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MusicCDServiceImpl implements MusicCDService {
     private final MusicCDRepository musicCDRepository;
+    private final CartItemRepository cartItemRepository;
     @Override
     @Transactional(readOnly = true)
     public List<MusicCD> findAll() {
@@ -28,8 +34,12 @@ public class MusicCDServiceImpl implements MusicCDService {
 
     @Override
     public List<MusicCD> findAllInCarts() {
-        //TODO
-        return null;
+        List<MusicCD> musicCDs = new ArrayList<>();
+        List<CartItem> cartItems = cartItemRepository.findAll();
+        for(CartItem cartItem : cartItems){
+            musicCDs.add(cartItem.getCd());
+        }
+        return musicCDs;
     }
 
     @Override
@@ -49,14 +59,28 @@ public class MusicCDServiceImpl implements MusicCDService {
 
     @Override
     public List<MusicCD> findAvailableCDs() {
-        //TODO
-        return null;
+        List<MusicCD> availableMusicCDs = new ArrayList<>();
+        List<MusicCD> activeMusicCDs = musicCDRepository.findByIsActiveTrue();
+        List<CartItem> cartItems = cartItemRepository.findAll();
+        for(MusicCD cd : activeMusicCDs){
+            int cartQuantity = 0;
+            for(CartItem cartItem : cartItems){
+                if(cartItem.getCd().getId().equals(cd.getId())){
+                    cartQuantity += cartItem.getQuantity();
+                }
+            }
+            if(cartQuantity < cd.getQuantity()){
+                availableMusicCDs.add(cd);
+            }
+        }
+
+        return availableMusicCDs;
     }
 
     @Override
     public boolean isAvailable(String cdId) {
-        //TODO
-        return false;
+        List<MusicCD> availableMusicCDs = findAvailableCDs();
+        return availableMusicCDs.stream().anyMatch(cd -> cd.getId().equals(cdId));
     }
 
     @Override

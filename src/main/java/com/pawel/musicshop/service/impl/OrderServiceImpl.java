@@ -1,6 +1,7 @@
 package com.pawel.musicshop.service.impl;
 
 import com.pawel.musicshop.model.*;
+import com.pawel.musicshop.repository.CartItemRepository;
 import com.pawel.musicshop.repository.OrderItemRepository;
 import com.pawel.musicshop.repository.OrderRepository;
 import com.pawel.musicshop.repository.UserRepository;
@@ -18,6 +19,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final UserRepository userRepository;
+    private final CartItemRepository cartItemRepository;
     @Override
     public List<Order> findAll() {
         return orderRepository.findAll();
@@ -57,6 +59,7 @@ public class OrderServiceImpl implements OrderService {
                         .build();
                 orderItemSet.add(orderItem);
                 orderItemRepository.save(orderItem);
+                cartItemRepository.delete(p);
             }
 
             order.setItems(orderItemSet);

@@ -9,6 +9,7 @@ import com.pawel.musicshop.repository.MusicCDRepository;
 import com.pawel.musicshop.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +37,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public boolean addMusicCDToCart(String cdId, String userId, int quantity) {
         Optional<MusicCD> musicCD = musicCDRepository.findById(cdId);
         Optional<Cart> cart = cartRepository.findUserCart(userId);
@@ -73,6 +75,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public boolean deleteMusicCDFromCart(String cdId, String userId) {
         Optional<MusicCD> musicCD = musicCDRepository.findById(cdId);
         Optional<Cart> cart = cartRepository.findUserCart(userId);

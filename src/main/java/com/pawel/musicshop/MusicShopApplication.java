@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MusicShopApplication {
 
     public static void main(String[] args) {
-        //TODO Zmienic statystyki usera, zeby lepiej sie wyswietlaly
+        //TODO Uzupelnic MusicCDServiceImpl oraz MusicCDRepository
         SpringApplication.run(MusicShopApplication.class, args);
     }
 
