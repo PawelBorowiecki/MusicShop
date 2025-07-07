@@ -12,4 +12,6 @@ public interface CartService {
     boolean addMusicCDToCart(String cdId, String userId, int quantity);
     boolean deleteMusicCDFromCart(String cdId, String userId);
     double getProductsInCartTotalPrice(String id);
+
+    void deleteCurrentlyUnavailableProducts();
 }

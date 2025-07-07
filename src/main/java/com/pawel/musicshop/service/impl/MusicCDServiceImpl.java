@@ -1,10 +1,8 @@
 package com.pawel.musicshop.service.impl;
 
-import com.pawel.musicshop.model.Cart;
 import com.pawel.musicshop.model.CartItem;
 import com.pawel.musicshop.model.MusicCD;
 import com.pawel.musicshop.repository.CartItemRepository;
-import com.pawel.musicshop.repository.CartRepository;
 import com.pawel.musicshop.repository.MusicCDRepository;
 import com.pawel.musicshop.service.MusicCDService;
 import lombok.RequiredArgsConstructor;
@@ -61,19 +59,11 @@ public class MusicCDServiceImpl implements MusicCDService {
     public List<MusicCD> findAvailableCDs() {
         List<MusicCD> availableMusicCDs = new ArrayList<>();
         List<MusicCD> activeMusicCDs = musicCDRepository.findByIsActiveTrue();
-        List<CartItem> cartItems = cartItemRepository.findAll();
         for(MusicCD cd : activeMusicCDs){
-            int cartQuantity = 0;
-            for(CartItem cartItem : cartItems){
-                if(cartItem.getCd().getId().equals(cd.getId())){
-                    cartQuantity += cartItem.getQuantity();
-                }
-            }
-            if(cartQuantity < cd.getQuantity()){
+            if(cd.getQuantity() > 0){
                 availableMusicCDs.add(cd);
             }
         }
-
         return availableMusicCDs;
     }
 

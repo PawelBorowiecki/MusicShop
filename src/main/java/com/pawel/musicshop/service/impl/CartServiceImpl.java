@@ -101,4 +101,22 @@ public class CartServiceImpl implements CartService {
         }
         return result;
     }
+
+    @Override
+    @Transactional
+    public void deleteCurrentlyUnavailableProducts() {
+        List<MusicCD> musicCDs = musicCDRepository.findByIsActiveTrue();
+        List<Cart> carts = cartRepository.findAll();
+        for(MusicCD cd : musicCDs){
+            for(Cart cart : carts){
+                for(CartItem cartItem : cart.getProducts()){
+                    if(cd.getQuantity() < cartItem.getQuantity()){
+                        cart.getProducts().remove(cartItem);
+                        cartItemRepository.delete(cartItem);
+                        cartRepository.save(cart);
+                    }
+                }
+            }
+        }
+    }
 }

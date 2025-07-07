@@ -2,6 +2,7 @@ package com.pawel.musicshop.service.impl;
 
 import com.pawel.musicshop.model.*;
 import com.pawel.musicshop.repository.*;
+import com.pawel.musicshop.service.CartService;
 import com.pawel.musicshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final CartItemRepository cartItemRepository;
     private final MusicCDRepository musicCDRepository;
+    private final CartService cartService;
     @Override
     public List<Order> findAll() {
         return orderRepository.findAll();
@@ -68,9 +70,10 @@ public class OrderServiceImpl implements OrderService {
 
             order.setItems(orderItemSet);
             orderRepository.save(order);
+            cartService.deleteCurrentlyUnavailableProducts();
+
             return true;
         }
-
         return false;
     }
 
