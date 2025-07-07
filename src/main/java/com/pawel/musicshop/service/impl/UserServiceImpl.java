@@ -2,8 +2,10 @@ package com.pawel.musicshop.service.impl;
 
 import com.pawel.musicshop.dto.UserRequest;
 import com.pawel.musicshop.model.Cart;
+import com.pawel.musicshop.model.CartItem;
 import com.pawel.musicshop.model.Role;
 import com.pawel.musicshop.model.User;
+import com.pawel.musicshop.repository.CartItemRepository;
 import com.pawel.musicshop.repository.CartRepository;
 import com.pawel.musicshop.repository.RoleRepository;
 import com.pawel.musicshop.repository.UserRepository;
@@ -22,6 +24,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     @Override
@@ -67,6 +70,11 @@ public class UserServiceImpl implements UserService {
         if(user.isPresent()){
             user.get().setActive(false);
             userRepository.save(user.get());
+            for(CartItem cartItem : cartItemRepository.findAll()){
+                if(user.get().getCart().getProducts().contains(cartItem)){
+                    cartItemRepository.delete(cartItem);
+                }
+            }
         }
     }
 

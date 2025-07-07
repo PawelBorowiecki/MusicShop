@@ -72,7 +72,7 @@ public class CartController {
         return ResponseEntity.badRequest().build();
     }
 
-    @DeleteMapping("/delete={cdId}")
+    @DeleteMapping("/{cdId}")
     public ResponseEntity<?> deleteFromCart(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String cdId){
         String login = userDetails.getUsername();
         Optional<User> user = userService.findByLogin(login);
