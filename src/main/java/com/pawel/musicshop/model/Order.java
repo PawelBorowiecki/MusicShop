@@ -30,7 +30,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
     @JsonIgnore
     private Set<OrderItem> items = new HashSet<>();
 

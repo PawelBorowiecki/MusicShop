@@ -22,7 +22,7 @@ public class OrderItem {
     @JsonIgnore
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cd_id")
     private MusicCD cd;
 

@@ -25,6 +25,6 @@ public class Cart {
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart")
     private Set<CartItem> products = new HashSet<>();
 }
