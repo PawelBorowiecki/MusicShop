@@ -63,10 +63,8 @@ public class CartController {
         Optional<User> user = userService.findByLogin(login);
         if(user.isPresent()){
             boolean status = cartService.addMusicCDToCart(cdId, user.get().getId(), quantity);
-            if(status){
+            if(status) {
                 return ResponseEntity.ok().build();
-            }else{
-                return ResponseEntity.internalServerError().build();
             }
         }
         return ResponseEntity.badRequest().build();

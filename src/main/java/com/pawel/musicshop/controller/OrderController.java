@@ -53,9 +53,9 @@ public class OrderController {
         String login = userDetails.getUsername();
         Optional<User> user = userService.findByLogin(login);
         if(user.isPresent()){
-            boolean status = orderService.placeOrder(user.get().getId());
-            if(status){
-                return ResponseEntity.status(HttpStatus.CREATED).build();
+            Order order = orderService.placeOrder(user.get().getId());
+            if(order != null){
+                return ResponseEntity.ok(order);
             }else{
                 return ResponseEntity.internalServerError().build();
             }

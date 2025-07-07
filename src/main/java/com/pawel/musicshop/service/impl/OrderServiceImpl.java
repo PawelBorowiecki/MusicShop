@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public boolean placeOrder(String userId) {
+    public Order placeOrder(String userId) {
         Optional<User> user = userRepository.findById(userId);
         if(user.isPresent()){
             Order order = Order.builder()
@@ -72,9 +72,9 @@ public class OrderServiceImpl implements OrderService {
             orderRepository.save(order);
             cartService.deleteCurrentlyUnavailableProducts();
 
-            return true;
+            return order;
         }
-        return false;
+        return null;
     }
 
     @Override
