@@ -28,7 +28,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
     private final OrderService orderService;
-    private final CartService cartService;
     private final PaymentRepository paymentRepository;
 
     @Value("${STRIPE_API_KEY}")
@@ -47,7 +46,7 @@ public class PaymentServiceImpl implements PaymentService {
                         .setName("Order " + orderId)
                         .build();
 
-        var amount = cartService.getProductsInCartTotalPrice(order.getUser().getCart().getId()) * 100.0;
+        var amount = orderService.getTotalPrice(orderId) * 100.0;
         SessionCreateParams.LineItem.PriceData priceData =
                 SessionCreateParams.LineItem.PriceData.builder()
                         .setCurrency("pln")

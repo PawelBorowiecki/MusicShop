@@ -11,4 +11,5 @@ public interface OrderService {
     List<Order> findUserOrders(String userId);
     boolean placeOrder(String userId);
     boolean changeOrderStatus(String id, String newStatus);
+    double getTotalPrice(String id);
 }

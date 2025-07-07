@@ -80,4 +80,16 @@ public class OrderServiceImpl implements OrderService {
         }
         return false;
     }
+
+    @Override
+    public double getTotalPrice(String id) {
+        double result = 0;
+        Optional<Order> order = orderRepository.findById(id);
+        if(order.isPresent()){
+            for(OrderItem orderItem : order.get().getItems()){
+                result += orderItem.getPrice();
+            }
+        }
+        return result;
+    }
 }
