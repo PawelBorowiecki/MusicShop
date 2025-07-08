@@ -83,7 +83,7 @@ public class CartServiceImpl implements CartService {
             Optional<CartItem> cartItem = cartItemRepository.findByCartAndCd(cart.get(), musicCD.get());
             if(cartItem.isPresent()){
                 cartItemRepository.deleteById(cartItem.get().getId());
-                cart.get().getProducts().remove(cartItem);
+                cart.get().getProducts().remove(cartItem.get());
                 return true;
             }
         }

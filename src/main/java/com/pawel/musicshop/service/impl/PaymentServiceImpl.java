@@ -6,7 +6,6 @@ import com.pawel.musicshop.model.Payment;
 import com.pawel.musicshop.model.PaymentStatus;
 import com.pawel.musicshop.repository.OrderRepository;
 import com.pawel.musicshop.repository.PaymentRepository;
-import com.pawel.musicshop.service.CartService;
 import com.pawel.musicshop.service.OrderService;
 import com.pawel.musicshop.service.PaymentService;
 import com.stripe.Stripe;
