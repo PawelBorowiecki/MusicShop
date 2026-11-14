@@ -44,19 +44,13 @@ public class CartServiceImpl implements CartService {
         if(musicCD.isPresent() && cart.isPresent()){
             Optional<CartItem> cartItemOpt = cartItemRepository.findByCartAndCd(cart.get(), musicCD.get());
             if(cartItemOpt.isPresent()){
-                if(musicCD.get().getQuantity() - cartItemOpt.get().getQuantity() - quantity < 0){
+                CartItem existing = cartItemOpt.get();
+                if(musicCD.get().getQuantity() - existing.getQuantity() - quantity < 0){
                     return false;
-                }else{
-                    CartItem newCartItem = CartItem.builder()
-                            .id(UUID.randomUUID().toString())
-                            .cart(cart.get())
-                            .cd(musicCD.get())
-                            .quantity(quantity)
-                            .build();
-                    cartItemRepository.save(newCartItem);
-                    cart.get().getProducts().add(newCartItem);
-                    return true;
                 }
+                existing.setQuantity(existing.getQuantity() + quantity);
+                cartItemRepository.save(existing);
+                return true;
             }else{
                 if(musicCD.get().getQuantity() >= quantity){
                     CartItem newCartItem = CartItem.builder()
