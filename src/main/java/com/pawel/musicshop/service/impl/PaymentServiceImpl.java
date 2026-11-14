@@ -31,10 +31,12 @@ public class PaymentServiceImpl implements PaymentService {
     private final OrderRepository orderRepository;
     private final PaymentRepository paymentRepository;
 
-    @Value("${STRIPE_API_KEY}")
+    @Value("${stripe.api-key}")
     private String apiKey;
-    @Value("${WEBHOOK_SECRET}")
+    @Value("${stripe.webhook-secret}")
     private String webhookSecret;
+    @Value("${app.base.url}")
+    private String baseUrl;
 
     @Override
     @Transactional
@@ -65,8 +67,8 @@ public class PaymentServiceImpl implements PaymentService {
                 .addLineItem(lineItem)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .putMetadata("orderId", orderId)
-                .setSuccessUrl("http://localhost:8080/api/payments/success")
-                .setCancelUrl("http://localhost:8080/api/payments/cancel")
+                .setSuccessUrl(baseUrl + "/api/payments/success")
+                .setCancelUrl(baseUrl + "/api/payments/cancel")
                 .build();
 
         try {
