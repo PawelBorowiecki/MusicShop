@@ -2,7 +2,7 @@ package com.pawel.musicshop.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;                             
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +22,7 @@ public class User {
     private String login;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(columnDefinition = "BOOLEAN", nullable = false)
